@@ -196,10 +196,11 @@ function getBlogFeed({filePathRegex, blogUrl, ...overrides}) {
           description: edge.node.fields.plainTextDescription,
           url,
           guid: url,
+          enclosure: {
+            url: `${siteUrl}/${edge.node.fields.banner.childImageSharp.fluid.src}`,
+          },
           custom_elements: [
             {
-              'media:content':
-                edge.node.fields.banner.childImageSharp.fluid.src,
               'content:encoded': `<div style="width: 100%; margin: 0 auto; max-width: 800px; padding: 40px 40px;">
                   <p>
                     I've posted a new article <em>"${edge.node.frontmatter.title}"</em> and you can <a href="${url}">read it online</a>.
