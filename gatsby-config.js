@@ -196,6 +196,8 @@ function getBlogFeed({filePathRegex, blogUrl, ...overrides}) {
           description: edge.node.fields.plainTextDescription,
           url,
           guid: url,
+          author: edge.node.fields.author,
+          categories: edge.node.fields.categories,
           enclosure: {
             url: `${siteUrl}/${edge.node.fields.banner.childImageSharp.fluid.src}`,
           },
@@ -231,6 +233,8 @@ function getBlogFeed({filePathRegex, blogUrl, ...overrides}) {
                  slug
                  date
                  plainTextDescription
+                 author
+                 categories
                  banner {
                   childImageSharp {
                     fluid(maxWidth: 260, traceSVG: {color: "#573ede"}, quality: 50) {
