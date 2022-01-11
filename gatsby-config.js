@@ -34,11 +34,7 @@ module.exports = {
     title: config.siteTitle,
     twitterHandle: config.twitterHandle,
     description: config.siteDescription,
-    keywords: [
-      'Software Engineer',
-      'React Training',
-      'Testing JavaScript Training',
-    ],
+    keywords: ['Software Engineer', 'React Mentoring', 'AWS Mentoring'],
     canonicalUrl: siteUrl,
     image: config.siteLogo,
     author: {
@@ -197,10 +193,13 @@ function getBlogFeed({filePathRegex, blogUrl, ...overrides}) {
         return {
           ...edge.node.frontmatter,
           date: edge.node.fields.date,
+          description: edge.node.fields.plainTextDescription,
           url,
           guid: url,
           custom_elements: [
             {
+              'media:content':
+                edge.node.fields.banner.childImageSharp.fluid.src,
               'content:encoded': `<div style="width: 100%; margin: 0 auto; max-width: 800px; padding: 40px 40px;">
                   <p>
                     I've posted a new article <em>"${edge.node.frontmatter.title}"</em> and you can <a href="${url}">read it online</a>.
@@ -231,6 +230,13 @@ function getBlogFeed({filePathRegex, blogUrl, ...overrides}) {
                  slug
                  date
                  plainTextDescription
+                 banner {
+                  childImageSharp {
+                    fluid(maxWidth: 260, traceSVG: {color: "#573ede"}, quality: 50) {
+                      src
+                    }
+                  }
+                 }
                }
                frontmatter {
                  title

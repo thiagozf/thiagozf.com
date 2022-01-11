@@ -6,7 +6,7 @@ module.exports = {
   lang: 'en',
   pathPrefix: '/',
   siteLogo: 'images/logo.png',
-  siteDescription: 'This is the digital garden of some random dude.',
+  siteDescription: 'The digital garden of a random dev.',
   minibio: `I write about JavaScript, Serverless, Linux and other fun stuff.`,
   author: 'Thiago Zanivan',
   organization: 'Thiago Zanivan',
@@ -21,8 +21,8 @@ module.exports = {
   backgroundColor: '#231C42',
 
   // Social component
-  twitter: 'https://twitter.com/thiagozf/',
   twitterHandle: '@thiagozf',
+  twitter: 'https://twitter.com/thiagozf/',
   github: 'https://github.com/thiagozf/',
   linkedin: 'https://www.linkedin.com/in/thiagozf/',
   youtube: 'https://www.youtube.com/thiagozf',

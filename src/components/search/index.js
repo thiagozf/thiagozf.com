@@ -263,7 +263,7 @@ function Search(props) {
         </div>
         <small css={{marginTop: 10, display: 'block'}}>
           {`If you can't find what you're looking for with this, try `}
-          <a href="https://www.google.com/search?q=site%3Athiagozf.com%2Fblog+testing">
+          <a href="https://www.google.com/search?q=site%3Athiagozf.com%2Fblog+serverless">
             using Google
           </a>
           {'.'}

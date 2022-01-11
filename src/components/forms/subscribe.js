@@ -178,7 +178,7 @@ function useFetch({url, body}) {
 function Subscribe({style, tags = [], header = 'Join the Newsletter'}) {
   const [values, setValues] = React.useState()
   const {pending, response, error} = useFetch({
-    url: `https://app.convertkit.com/forms/1332497/subscriptions`,
+    url: `https://app.convertkit.com/forms/1373370/subscriptions`,
     body: values,
   })
 
