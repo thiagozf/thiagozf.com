@@ -1,12 +1,6 @@
 ---
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb'
+import Breadcrumb from '@/components/Breadcrumb.astro'
+import { cn } from '@/lib/utils'
 import { Icon } from 'astro-icon/components'
 
 export interface BreadcrumbItem {
@@ -23,36 +17,26 @@ interface Props {
 const { items, class: className } = Astro.props
 ---
 
-<Breadcrumb className={className}>
-  <BreadcrumbList>
-    <BreadcrumbItem>
-      <BreadcrumbLink href="/">
-        <Icon name="lucide:home" class="size-4" />
-      </BreadcrumbLink>
-    </BreadcrumbItem>
+<nav aria-label="breadcrumb" class={cn('hidden md:block', className)}>
+  <ol
+    class="flex flex-wrap items-center gap-1.5 break-words text-sm text-muted-foreground sm:gap-2.5"
+  >
+    <Breadcrumb href="/" icon="lucide:home" />
     {
       items.map((item, index) => (
         <>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            {index === items.length - 1 ? (
-              <BreadcrumbPage>
-                <span class="flex items-center gap-x-2">
-                  {item.icon && <Icon name={item.icon} class="size-4" />}
-                  {item.label}
-                </span>
-              </BreadcrumbPage>
-            ) : (
-              <BreadcrumbLink href={item.href}>
-                <span class="flex items-center gap-x-2">
-                  {item.icon && <Icon name={item.icon} class="size-4" />}
-                  {item.label}
-                </span>
-              </BreadcrumbLink>
-            )}
-          </BreadcrumbItem>
+          <li role="presentation" aria-hidden="true">
+            <Icon name="lucide:chevron-right" class="size-3.5" />
+          </li>
+
+          <Breadcrumb
+            icon={item.icon}
+            label={item.label}
+            href={item.href}
+            active={index === items.length - 1}
+          />
         </>
       ))
     }
-  </BreadcrumbList>
-</Breadcrumb>
+  </ol>
+</nav>

@@ -1,4 +1,4 @@
-import { SITE } from '@/consts'
+import { site } from '@/site'
 import rss from '@astrojs/rss'
 import type { APIContext } from 'astro'
 import { getCollection } from 'astro:content'
@@ -17,9 +17,9 @@ export async function GET(context: APIContext) {
 
     // Return RSS feed
     return rss({
-      title: SITE.TITLE,
-      description: SITE.DESCRIPTION,
-      site: context.site ?? SITE.SITEURL,
+      title: site.title,
+      description: site.description,
+      site: context.site ?? site.url,
       items: items.map((item) => ({
         title: item.data.title,
         description: item.data.description,

@@ -1,0 +1,50 @@
+---
+import Button from '@/components/Button.astro'
+import Container from '@/components/Container.astro'
+import Input from '@/components/Input.astro'
+import Layout from '@/layouts/Layout.astro'
+import { track } from '@/lib/events'
+
+export const prerender = false
+
+if (Astro.request.method === 'POST') {
+  try {
+    const data = await Astro.request.formData()
+    const email = data.get('email') as string
+    await track({ event: 'newsletter-subscribed', email })
+    return Astro.redirect('/thank-you')
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error(error.message)
+    }
+  }
+}
+---
+
+<Layout title="Newsletter">
+  <Container
+    class="m-auto flex flex-col items-center justify-center gap-y-4 text-center"
+  >
+    <div class="max-w-md">
+      <h1 class="mb-4 text-3xl font-bold">thiagozf's Newsletter</h1>
+      <p class="prose prose-neutral dark:prose-invert">
+        Subscribe to my newsletter to receive emails when I publish new posts
+      </p>
+    </div>
+    <form method="POST" class="flex items-center gap-2">
+      <Input
+        name="email"
+        type="email"
+        placeholder="my@email.com"
+        required
+        autofocus
+      />
+      <Button as="button" variant="outline" class="group gap-x-1.5">
+        Subscribe
+        <span class="transition-transform group-hover:translate-x-1"
+          >&rarr;</span
+        >
+      </Button>
+    </form>
+  </Container>
+</Layout>

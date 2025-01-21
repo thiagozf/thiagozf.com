@@ -1,6 +1,5 @@
 import { rehypeHeadingIds } from '@astrojs/markdown-remark'
 import mdx from '@astrojs/mdx'
-import react from '@astrojs/react'
 import sitemap from '@astrojs/sitemap'
 import tailwind from '@astrojs/tailwind'
 import { transformerCopyButton } from '@rehype-pretty/transformers'
@@ -21,14 +20,13 @@ import icon from 'astro-icon'
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://astro-erudite.vercel.app',
+  site: 'https://thiagozf.com',
   integrations: [
     tailwind({
       applyBaseStyles: false,
     }),
     sitemap(),
     mdx(),
-    react(),
     icon(),
   ],
   markdown: {
@@ -48,8 +46,8 @@ export default defineConfig({
         rehypePrettyCode,
         {
           theme: {
-            light: 'github-light-high-contrast',
-            dark: 'github-dark-high-contrast',
+            light: 'everforest-dark',
+            dark: 'everforest-dark',
           },
           transformers: [
             transformerNotationDiff(),

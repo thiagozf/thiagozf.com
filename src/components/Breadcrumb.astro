@@ -1,0 +1,35 @@
+---
+import { cn } from '@/lib/utils'
+import { Icon } from 'astro-icon/components'
+
+type Props = {
+  label?: string
+  icon?: string
+  class?: string
+  href?: string
+  active?: boolean
+}
+
+const {
+  class: className,
+  icon,
+  href = '#',
+  label,
+  active = false,
+} = Astro.props
+---
+
+<li class={cn('inline-flex items-center gap-1.5', className)}>
+  <a
+    href={href}
+    class={cn(
+      'flex items-center gap-x-2',
+      active
+        ? 'font-normal text-foreground'
+        : 'transition-colors hover:text-foreground',
+    )}
+  >
+    {icon && <Icon name={icon} class="size-4" />}
+    {label}
+  </a>
+</li>

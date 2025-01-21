@@ -1,0 +1,107 @@
+---
+import Button from '@/components/Button.astro'
+import { cn } from '@/lib/utils'
+import { Icon } from 'astro-icon/components'
+
+type Props = {
+  currentPage: number
+  totalPages: number
+  baseUrl: string
+  class?: string
+}
+
+const getPageUrl = (page: number) => {
+  return page === 1 ? baseUrl : `${baseUrl}${page}`
+}
+
+const {
+  currentPage = 1,
+  totalPages = 1,
+  baseUrl,
+  class: className,
+} = Astro.props
+const pages = Array.from({ length: totalPages }, (_, i) => i + 1)
+---
+
+<nav
+  role="navigation"
+  aria-label="pagination"
+  class={cn('mx-auto flex w-full justify-center', className)}
+>
+  <ul class="flex flex-row flex-wrap items-center gap-1">
+    {/* Previous Button */}
+    <li>
+      <Button
+        variant="ghost"
+        href={currentPage > 1 ? getPageUrl(currentPage - 1) : '#'}
+        aria-label="Go to previous page"
+        class={cn({
+          'pointer-events-none opacity-50': currentPage === 1,
+        })}
+        aria-disabled={currentPage === 1 ? 'true' : undefined}
+        tabindex={currentPage === 1 ? '-1' : undefined}
+      >
+        <Icon name="lucide:chevron-left" class="size-4" />
+        <span>Previous</span>
+      </Button>
+    </li>
+
+    {/* Page Numbers */}
+    {
+      pages.map((page) => (
+        <li>
+          <Button
+            variant={page === currentPage ? 'outline' : 'ghost'}
+            size="icon"
+            href={getPageUrl(page)}
+            aria-current={page === currentPage ? 'page' : undefined}
+          >
+            {page}
+          </Button>
+        </li>
+      ))
+    }
+
+    {/* Ellipsis */}
+    {
+      totalPages > 5 && (
+        <li>
+          <span
+            class="flex h-9 w-9 items-center justify-center text-gray-500"
+            aria-hidden="true"
+          >
+            {/* More Horizontal Icon */}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-4 w-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <circle cx="5" cy="12" r="1" />
+              <circle cx="12" cy="12" r="1" />
+              <circle cx="19" cy="12" r="1" />
+            </svg>
+            <span class="sr-only">More pages</span>
+          </span>
+        </li>
+      )
+    }
+
+    <li>
+      <Button
+        variant="ghost"
+        href={currentPage < totalPages ? getPageUrl(currentPage + 1) : '#'}
+        aria-label="Go to next page"
+        class={cn({
+          'pointer-events-none opacity-50': currentPage === totalPages,
+        })}
+        aria-disabled={currentPage === totalPages ? 'true' : undefined}
+        tabindex={currentPage === totalPages ? '-1' : undefined}
+      >
+        <span>Next</span>
+        <Icon name="lucide:chevron-right" class="size-4" />
+      </Button>
+    </li>
+  </ul>
+</nav>

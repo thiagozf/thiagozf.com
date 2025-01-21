@@ -1,11 +1,11 @@
 ---
+import Badge from '@/components/Badge.astro'
 import Breadcrumbs from '@/components/Breadcrumbs.astro'
+import Button from '@/components/Button.astro'
 import Link from '@/components/Link.astro'
 import PostNavigation from '@/components/PostNavigation.astro'
+import Separator from '@/components/Separator.astro'
 import TableOfContents from '@/components/TableOfContents.astro'
-import { badgeVariants } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Separator } from '@/components/ui/separator'
 import Layout from '@/layouts/Layout.astro'
 import { parseAuthors } from '@/lib/server-utils'
 import { formatDate, readingTime } from '@/lib/utils'
@@ -22,6 +22,7 @@ export async function getStaticPaths() {
     props: post,
   }))
 }
+
 type Props = CollectionEntry<'blog'>
 
 const posts = (await getCollection('blog'))
@@ -57,7 +58,7 @@ const authors = await parseAuthors(post.data.authors ?? [])
 <Layout
   title={post.data.title}
   description={post.data.description}
-  image={post.data.image?.src ?? '/static/1200x630.png'}
+  image={`/og/blog/${post.id}.png`}
 >
   <section
     class="grid grid-cols-[minmax(0px,1fr)_min(768px,100%)_minmax(0px,1fr)] gap-y-6 *:px-4"
@@ -69,17 +70,6 @@ const authors = await parseAuthors(post.data.authors ?? [])
       ]}
       class="col-start-2"
     />
-    {
-      post.data.image && (
-        <Image
-          src={post.data.image}
-          alt={post.data.title}
-          width={1200}
-          height={630}
-          class="col-span-full mx-auto w-full max-w-[1000px] object-cover"
-        />
-      )
-    }
     <section class="col-start-2 flex flex-col gap-y-6 text-center">
       <div class="flex flex-col gap-y-4">
         <h1 class="text-4xl font-bold leading-tight sm:text-5xl">
@@ -116,13 +106,13 @@ const authors = await parseAuthors(post.data.authors ?? [])
                     </div>
                   ))}
                 </div>
-                <Separator orientation="vertical" className="h-4" />
+                <Separator orientation="vertical" class="h-4" />
               </>
             )
           }
           <div class="flex items-center gap-2">
             <span>{formatDate(post.data.date)}</span>
-            <Separator orientation="vertical" className="h-4" />
+            <Separator orientation="vertical" class="h-4" />
             <span>{readingTime(post.body!)}</span>
           </div>
         </div>
@@ -130,13 +120,10 @@ const authors = await parseAuthors(post.data.authors ?? [])
           {
             post.data.tags && post.data.tags.length > 0 ? (
               post.data.tags.map((tag) => (
-                <a
-                  href={`/tags/${tag}`}
-                  class={badgeVariants({ variant: 'secondary' })}
-                >
+                <Badge as="a" href={`/tags/${tag}`} variant="secondary">
                   <Icon name="lucide:hash" class="size-3 -translate-x-0.5" />
                   {tag}
-                </a>
+                </Badge>
               ))
             ) : (
               <span class="text-sm text-muted-foreground">
@@ -146,14 +133,12 @@ const authors = await parseAuthors(post.data.authors ?? [])
           }
         </div>
       </div>
-
-      <PostNavigation prevPost={prevPost} nextPost={nextPost} />
     </section>
 
     {headings.length > 0 && <TableOfContents headings={headings} />}
 
     <article
-      class="prose prose-neutral col-start-2 max-w-none dark:prose-invert"
+      class="prose prose-sm prose-neutral col-start-2 max-w-none dark:prose-invert"
     >
       <Content />
     </article>
@@ -161,19 +146,20 @@ const authors = await parseAuthors(post.data.authors ?? [])
     <PostNavigation prevPost={prevPost} nextPost={nextPost} />
   </section>
 
-  <Button
-    variant="outline"
-    size="icon"
-    className="group fixed bottom-8 right-8 z-50 hidden"
-    id="scroll-to-top"
-    title="Scroll to top"
-    aria-label="Scroll to top"
-  >
-    <Icon
-      name="lucide:arrow-up"
-      class="mx-auto size-4 transition-all group-hover:-translate-y-0.5"
-    />
-  </Button>
+  <div id="scroll-to-top" class="fixed bottom-8 right-8 z-50 hidden">
+    <Button
+      variant="outline"
+      size="icon"
+      title="Scroll to top"
+      aria-label="Scroll to top"
+      class="group"
+    >
+      <Icon
+        name="lucide:arrow-up"
+        class="size-4 transition-all group-hover:-translate-y-0.5"
+      />
+    </Button>
+  </div>
 
   <script>
     document.addEventListener('astro:page-load', () => {

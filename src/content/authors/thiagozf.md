@@ -1,0 +1,10 @@
+---
+name: 'thiagozf'
+avatar: 'https://github.com/thiagozf.png'
+website: 'https://thiagozf.com'
+twitter: 'https://twitter.com/thiagozf'
+github: 'https://github.com/thiagozf'
+mail: 'hi@thiagozf.com'
+---
+
+I like computers.

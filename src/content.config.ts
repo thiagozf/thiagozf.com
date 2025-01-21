@@ -3,7 +3,7 @@ import { defineCollection, z } from 'astro:content'
 
 const blog = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/blog' }),
-  schema: ({ image }) =>
+  schema: () =>
     z.object({
       title: z
         .string()
@@ -18,7 +18,6 @@ const blog = defineCollection({
           'Description should be 155 characters or less for optimal Open Graph display.',
         ),
       date: z.coerce.date(),
-      image: image().optional(),
       tags: z.array(z.string()).optional(),
       authors: z.array(z.string()).optional(),
       draft: z.boolean().optional(),
@@ -29,8 +28,7 @@ const authors = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/authors' }),
   schema: z.object({
     name: z.string(),
-    pronouns: z.string().optional(),
-    avatar: z.string().url(),
+    avatar: z.string(),
     bio: z.string().optional(),
     mail: z.string().email().optional(),
     website: z.string().url().optional(),
@@ -43,13 +41,14 @@ const authors = defineCollection({
 
 const projects = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/projects' }),
-  schema: ({ image }) =>
+  schema: () =>
     z.object({
       name: z.string(),
       description: z.string(),
+      date: z.coerce.date(),
       tags: z.array(z.string()),
-      image: image(),
       link: z.string().url(),
+      active: z.boolean().optional().default(true),
     }),
 })
 

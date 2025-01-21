@@ -3,44 +3,45 @@
 @tailwind utilities;
 
 @font-face {
-  font-family: 'Geist';
-  src: url('/fonts/GeistVF.woff2') format('woff2');
-  font-weight: 100 900;
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/JetBrainsMono[wght].woff2') format('woff2-variations');
+  font-weight: 100 800;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Geist Mono';
-  src: url('/fonts/GeistMonoVF.woff2') format('woff2');
-  font-weight: 100 900;
-  font-style: normal;
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/JetBrainsMono-Italic[wght].woff2') format('woff2-variations');
+  font-weight: 100 800;
+  font-style: italic;
   font-display: swap;
 }
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 3.9%;
-    --primary: 0 0% 9%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 0 0% 80.1%;
-    --secondary-foreground: 0 0% 9%;
-    --muted: 0 0% 80.1%;
-    --muted-foreground: 0 0% 45.1%;
-    --accent: 0 0% 80.1%;
-    --accent-foreground: 0 0% 9%;
+    --background: 0 0% 3.9%;
+    --foreground: 0 0% 98%;
+    --primary: 34 54% 81%;
+    --primary-foreground: 0 0% 9%;
+    --secondary: 0 0% 14.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+    --accent: 0 0% 14.9%;
+    --accent-foreground: 0 0% 98%;
     --additive: 112 50% 36%;
     --additive-foreground: 0 0% 9%;
-    --destructive: 0 84.2% 60.2%;
+    --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 89.8%;
-    --ring: 0 0% 3.9%;
+    --border: 0 0% 14.9%;
+    --ring: 0 0% 83.1%;
   }
+
   .dark {
     --background: 0 0% 3.9%;
     --foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
+    --primary: 34 54% 81%;
     --primary-foreground: 0 0% 9%;
     --secondary: 0 0% 14.9%;
     --secondary-foreground: 0 0% 98%;
@@ -63,12 +64,8 @@
   }
 
   html {
-    color-scheme: light;
-    @apply bg-background text-foreground;
-
-    &.dark {
-      color-scheme: dark;
-    }
+    color-scheme: dark;
+    @apply forced-color-adjust-none bg-background text-foreground;
 
     ::-webkit-scrollbar-corner {
       @apply bg-transparent;
@@ -83,10 +80,23 @@
 
 @layer components {
   article {
-    @apply prose-headings:scroll-mt-20 prose-headings:break-words first:prose-headings:mt-0 prose-p:break-words prose-a:!break-words prose-a:!decoration-muted-foreground prose-a:underline-offset-[3px] prose-a:transition-colors hover:prose-a:!decoration-foreground prose-pre:!px-0 prose-img:mx-auto;
+    @apply prose-headings:scroll-mt-20 prose-headings:break-words;
+    @apply prose-p:break-words;
+    @apply prose-a:!text-primary prose-a:!decoration-primary/50 prose-a:!underline-offset-[3px] prose-a:transition-colors hover:prose-a:!decoration-inherit;
+    @apply prose-blockquote:!not-italic prose-blockquote:!text-muted-foreground;
+    @apply prose-pre:!px-0;
+    @apply prose-img:mx-auto prose-img:rounded-xl prose-img:border;
+    @apply prose-table:mx-auto prose-table:block prose-table:max-w-fit prose-table:overflow-x-auto prose-td:break-words;
+    @apply sm:prose-table:mx-0 sm:prose-table:table sm:prose-table:max-w-none;
 
+    /* Fixing Katex display */
     .katex-display {
       @apply overflow-x-auto overflow-y-hidden py-4;
+    }
+
+    /* Fixing Katex fractions */
+    .frac-line {
+      @apply border-foreground;
     }
 
     /* Removes background from <mark> elements */
@@ -97,7 +107,7 @@
     /* Blanket syntax highlighting */
     code[data-theme*=' '] {
       span {
-        color: var(--shiki-light);
+        color: var(--shiki-dark);
       }
 
       .dark & span {
@@ -107,7 +117,7 @@
 
     /* Inline code */
     :not(pre) > code {
-      @apply relative rounded bg-muted/50 px-[0.3rem] py-[0.2rem] font-mono text-sm font-medium;
+      @apply relative rounded bg-muted/50 px-[0.3rem] py-[0.2rem] font-mono text-sm font-medium before:!content-none after:!content-none;
     }
 
     /* Code blocks */
@@ -170,6 +180,24 @@
             @apply bg-muted-foreground/40 py-[7px];
           }
 
+          .tab {
+            @apply relative;
+          }
+
+          .tab::before {
+            @apply absolute opacity-30;
+            content: '⇥';
+          }
+
+          /* Skip lines */
+          .skip {
+            @apply my-2 bg-foreground/5 text-center text-foreground;
+
+            &::before {
+              content: '' !important;
+            }
+          }
+
           /* Diff lines */
           .diff {
             &.add {
@@ -177,12 +205,19 @@
             }
             &.remove {
               @apply bg-destructive/15;
+              &::before {
+                content: '-';
+                counter-increment: none;
+              }
+            }
+            &.highlight {
+              @apply bg-foreground/10;
             }
           }
 
           /* Copy button */
           > button:has(> span) {
-            @apply right-0.5 top-[3px] m-0 size-8 rounded-md bg-background p-1 backdrop-blur-none transition-all;
+            @apply right-1 top-1 m-0 size-8 rounded-lg bg-secondary p-1 backdrop-blur-none transition-all duration-200;
           }
         }
       }

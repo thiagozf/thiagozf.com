@@ -1,12 +1,11 @@
 ---
-import Link from '@/components/Link.astro'
-import { buttonVariants } from '@/components/ui/button'
-import type { Link as SocialLink } from '@/consts'
+import Button from '@/components/Button.astro'
 import { cn } from '@/lib/utils'
+import type { Link } from '@/site'
 import { Icon } from 'astro-icon/components'
 
 interface Props {
-  links: SocialLink[]
+  links: Link[]
   className?: string
 }
 
@@ -21,7 +20,7 @@ const iconMap = {
   RSS: 'lucide:rss',
 }
 
-const getSocialLink = ({ href, label }: SocialLink) => ({
+const getSocialLink = ({ href, label }: Link) => ({
   href: label === 'Email' ? `mailto:${href}` : href,
   ariaLabel: label,
   iconName:
@@ -35,15 +34,16 @@ const getSocialLink = ({ href, label }: SocialLink) => ({
       const { href, ariaLabel, iconName } = getSocialLink(link)
       return (
         <li>
-          <Link
+          <Button
             href={href}
             aria-label={ariaLabel}
             title={ariaLabel}
-            class={buttonVariants({ variant: 'outline', size: 'icon' })}
-            external
+            variant="outline"
+            size="icon"
+            target="_blank"
           >
             <Icon name={iconName} class="size-4" />
-          </Link>
+          </Button>
         </li>
       )
     })
