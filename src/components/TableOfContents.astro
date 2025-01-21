@@ -55,37 +55,32 @@ function buildToc(headings: Heading[]): Heading[] {
 </nav>
 
 <script>
-  function setupToc() {
-    const header = document.querySelector('header')
-    const headerHeight = header ? header.offsetHeight : 0
+  const header = document.querySelector('header')
+  const headerHeight = header ? header.offsetHeight : 0
 
-    const observer = new IntersectionObserver(
-      (sections) => {
-        sections.forEach((section) => {
-          const heading = section.target.querySelector('h2, h3, h4, h5, h6')
-          if (!heading) return
+  const observer = new IntersectionObserver(
+    (sections) => {
+      sections.forEach((section) => {
+        const heading = section.target.querySelector('h2, h3, h4, h5, h6')
+        if (!heading) return
 
-          const id = heading.getAttribute('id')
-          const link = document.querySelector(
-            `#toc-container li a[href="#${id}"]`,
-          )
-          if (!link) return
+        const id = heading.getAttribute('id')
+        const link = document.querySelector(
+          `#toc-container li a[href="#${id}"]`,
+        )
+        if (!link) return
 
-          const addRemove = section.isIntersecting ? 'add' : 'remove'
-          link.classList[addRemove]('text-foreground')
-        })
-      },
-      {
-        rootMargin: `-${headerHeight}px 0px 0px 0px`,
-      },
-    )
+        const addRemove = section.isIntersecting ? 'add' : 'remove'
+        link.classList[addRemove]('text-foreground')
+      })
+    },
+    {
+      rootMargin: `-${headerHeight}px 0px 0px 0px`,
+    },
+  )
 
-    const sections = document.querySelectorAll('.prose section')
-    sections.forEach((section) => {
-      observer.observe(section)
-    })
-  }
-
-  document.addEventListener('astro:page-load', setupToc)
-  document.addEventListener('astro:after-swap', setupToc)
+  const sections = document.querySelectorAll('.prose section')
+  sections.forEach((section) => {
+    observer.observe(section)
+  })
 </script>

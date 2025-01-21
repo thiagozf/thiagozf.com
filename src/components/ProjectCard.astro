@@ -1,7 +1,6 @@
 ---
 import Badge from '@/components/Badge.astro'
 import Link from '@/components/Link.astro'
-import { Image } from 'astro:assets'
 import type { CollectionEntry } from 'astro:content'
 
 type Props = {
@@ -19,19 +18,6 @@ const { project } = Astro.props
     class="flex flex-col gap-4 sm:flex-row"
     external
   >
-    {
-      project.data.image && (
-        <div class="max-w-[200px] sm:flex-shrink-0">
-          <Image
-            src={project.data.image}
-            alt={project.data.name}
-            width={1200}
-            height={630}
-            class="object-cover"
-          />
-        </div>
-      )
-    }
     <div class="flex-grow">
       <h3 class="mb-1 text-lg font-semibold">
         {project.data.name}

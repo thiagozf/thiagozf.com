@@ -12,15 +12,14 @@ export type Link = {
 
 export const site: Site = {
   title: 'thiagozf',
-  description:
-    'astro-erudite is a opinionated, no-frills blogging template—built with Astro, Tailwind, and shadcn/ui.',
+  description: 'Friendly tutorials for developers',
   email: 'hi@thiagozf.com',
   url: 'https://thiagozf.com',
 }
 
 export const nav: Link[] = [
-  { href: '/blog', label: 'Blog' },
-  { href: '/newsletter', label: 'Newsletter' },
+  { href: '/blog/', label: 'Blog' },
+  { href: '/newsletter/', label: 'Newsletter' },
 ]
 
 export const social: Link[] = [

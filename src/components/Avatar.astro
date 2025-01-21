@@ -1,13 +1,17 @@
 ---
 import { cn } from '@/lib/utils'
+import { Image } from 'astro:assets'
+import logo from '../../public/static/logo.svg'
 
 type Props = {
-  class?: string
-  src: string
+  src?: ImageMetadata
+  width: number
+  height: number
   alt?: string
+  class?: string
 }
 
-const { src, alt = 'Avatar', class: className } = Astro.props
+const { src = logo, alt = 'Avatar', class: className, ...props } = Astro.props
 ---
 
 <div
@@ -16,5 +20,5 @@ const { src, alt = 'Avatar', class: className } = Astro.props
     className,
   )}
 >
-  <img class="aspect-square h-full w-full" src={src} alt={alt} />
+  <Image {...props} class="aspect-square h-full w-full" src={src} alt={alt} />
 </div>

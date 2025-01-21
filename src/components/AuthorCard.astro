@@ -3,7 +3,7 @@ import Avatar from '@/components/Avatar.astro'
 import Link from '@/components/Link.astro'
 import { cn } from '@/lib/utils'
 import type { Link as SocialLink } from '@/site'
-import { CollectionEntry, render } from 'astro:content'
+import { type CollectionEntry, render } from 'astro:content'
 import SocialIcons from './SocialIcons.astro'
 
 type Props = {
@@ -11,8 +11,7 @@ type Props = {
   linkDisabled?: boolean
 }
 const { author, linkDisabled = false } = Astro.props
-const { name, avatar, github, twitter, linkedin, website, mail } =
-  author.data
+const { name, avatar, github, twitter, linkedin, website, mail } = author.data
 
 const socialLinks: SocialLink[] = [
   website && { href: website, label: 'Website' },
@@ -30,12 +29,14 @@ const { Content } = await render(author)
 >
   <div class="flex flex-wrap gap-4">
     <Link
-      href={`/authors/${author.id}`}
+      href={`/authors/${author.id}/`}
       class={cn('block', linkDisabled && 'pointer-events-none')}
     >
       <Avatar
         src={avatar}
         alt={name}
+        height={128}
+        width={128}
         class={cn(
           'size-32 rounded-md',
           !linkDisabled &&
@@ -48,12 +49,11 @@ const { Content } = await render(author)
         <div class="flex flex-wrap items-center gap-x-2">
           <h3 class="text-lg font-semibold">{name}</h3>
         </div>
-            <article
-      class="prose prose-sm prose-neutral col-start-2 max-w-none dark:prose-invert"
-    >
-
-        <Content />
-          </article>
+        <article
+          class="prose prose-sm prose-neutral col-start-2 max-w-none dark:prose-invert"
+        >
+          <Content />
+        </article>
       </div>
       <SocialIcons links={socialLinks} />
     </div>

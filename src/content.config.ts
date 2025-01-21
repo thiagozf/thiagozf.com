@@ -26,17 +26,18 @@ const blog = defineCollection({
 
 const authors = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/authors' }),
-  schema: z.object({
-    name: z.string(),
-    avatar: z.string(),
-    bio: z.string().optional(),
-    mail: z.string().email().optional(),
-    website: z.string().url().optional(),
-    twitter: z.string().url().optional(),
-    github: z.string().url().optional(),
-    linkedin: z.string().url().optional(),
-    discord: z.string().url().optional(),
-  }),
+  schema: ({ image }) =>
+    z.object({
+      name: z.string(),
+      avatar: image(),
+      bio: z.string().optional(),
+      mail: z.string().email().optional(),
+      website: z.string().url().optional(),
+      twitter: z.string().url().optional(),
+      github: z.string().url().optional(),
+      linkedin: z.string().url().optional(),
+      discord: z.string().url().optional(),
+    }),
 })
 
 const projects = defineCollection({

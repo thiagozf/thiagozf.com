@@ -15,12 +15,12 @@ import remarkEmoji from 'remark-emoji'
 import remarkMath from 'remark-math'
 import remarkToc from 'remark-toc'
 import sectionize from '@hbsnow/rehype-sectionize'
-
 import icon from 'astro-icon'
 
 // https://astro.build/config
 export default defineConfig({
   site: 'https://thiagozf.com',
+
   integrations: [
     tailwind({
       applyBaseStyles: false,
@@ -29,6 +29,12 @@ export default defineConfig({
     mdx(),
     icon(),
   ],
+
+  image: {
+    domains: ['github.com'],
+    remotePatterns: [{ protocol: 'https' }],
+  },
+
   markdown: {
     syntaxHighlight: false,
     rehypePlugins: [
@@ -62,10 +68,12 @@ export default defineConfig({
     ],
     remarkPlugins: [remarkToc, remarkMath, remarkEmoji],
   },
+
   server: {
     port: 1234,
     host: true,
   },
+
   devToolbar: {
     enabled: false,
   },

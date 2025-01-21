@@ -24,7 +24,7 @@ const authors = await parseAuthors(entry.data.authors ?? [])
   class="not-prose rounded-xl border p-4 transition-colors duration-300 ease-in-out hover:bg-secondary/50"
 >
   <Link
-    href={`/${entry.collection}/${entry.id}`}
+    href={`/${entry.collection}/${entry.id}/`}
     class="flex flex-col gap-4 sm:flex-row"
   >
     <div class="flex-grow">
@@ -43,6 +43,8 @@ const authors = await parseAuthors(entry.data.authors ?? [])
               {authors.map((author) => (
                 <div class="flex items-center gap-x-1.5">
                   <Avatar
+                    height={30}
+                    width={30}
                     src={author.avatar}
                     alt={author.name}
                     class="size-5 rounded-full"

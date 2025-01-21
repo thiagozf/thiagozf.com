@@ -10,7 +10,7 @@ const newPages = Object.entries(pages).reduce((acc, [path, page]) => {
 export const { getStaticPaths, GET } = OGImageRoute({
   param: 'route',
   pages: newPages,
-  getImageOptions: (path, page) => ({
+  getImageOptions: (_path, page) => ({
     title: page.frontmatter.title || page.frontmatter.name || '',
     description: page.frontmatter.description || '',
     logo: {

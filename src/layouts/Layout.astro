@@ -32,5 +32,17 @@ const { title, description, image } = Astro.props
       </main>
       <Footer />
     </div>
+
+    <link
+      id="katex-css"
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"
+      media="print"
+    />
   </body>
 </html>
+
+<script>
+  const katex = document.getElementById('katex-css')!
+  katex.setAttribute('media', 'all')
+</script>

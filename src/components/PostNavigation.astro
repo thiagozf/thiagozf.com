@@ -8,7 +8,7 @@ const { prevPost, nextPost, class: className } = Astro.props
 
 <div class={cn('col-start-2 flex flex-col gap-4 sm:flex-row', className)}>
   <Button
-    href={nextPost ? `/blog/${nextPost.id}` : '#'}
+    href={nextPost ? `/blog/${nextPost.id}/` : '#'}
     variant="outline"
     class={cn(
       'rounded-xl group flex items-center justify-start w-full sm:w-1/2 h-fit',
@@ -30,7 +30,7 @@ const { prevPost, nextPost, class: className } = Astro.props
     </div>
   </Button>
   <Button
-    href={prevPost ? `/blog/${prevPost.id}` : '#'}
+    href={prevPost ? `/blog/${prevPost.id}/` : '#'}
     variant="outline"
     class={cn(
       'rounded-xl group flex items-center justify-end w-full sm:w-1/2 h-fit',

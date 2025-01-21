@@ -3,15 +3,15 @@ import Button from '@/components/Button.astro'
 import Container from '@/components/Container.astro'
 import Input from '@/components/Input.astro'
 import Layout from '@/layouts/Layout.astro'
-import { track } from '@/lib/events'
 
-export const prerender = false
+/*
+import { track } from '@/lib/events'
 
 if (Astro.request.method === 'POST') {
   try {
     const data = await Astro.request.formData()
     const email = data.get('email') as string
-    await track({ event: 'newsletter-subscribed', email })
+    await track()
     return Astro.redirect('/thank-you')
   } catch (error) {
     if (error instanceof Error) {
@@ -19,6 +19,7 @@ if (Astro.request.method === 'POST') {
     }
   }
 }
+*/
 ---
 
 <Layout title="Newsletter">

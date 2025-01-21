@@ -16,7 +16,9 @@ type Props = {
 const { tag, posts } = Astro.props
 
 export async function getStaticPaths() {
-  const posts = await getCollection('blog')
+  const posts = (await getCollection('blog'))
+    .filter((post) => !post.data.draft)
+    .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
   const tags = posts.flatMap((post) => post.data.tags || [])
   const uniqueTags = Array.from(
     new Set(tags.filter((tag): tag is string => typeof tag === 'string')),
@@ -39,7 +41,7 @@ export async function getStaticPaths() {
   <Container class="flex flex-col gap-y-6">
     <Breadcrumbs
       items={[
-        { href: '/tags', label: 'Tags', icon: 'lucide:tags' },
+        { href: '/tags/', label: 'Tags', icon: 'lucide:tags' },
         { label: tag, icon: 'lucide:tag' },
       ]}
     />
