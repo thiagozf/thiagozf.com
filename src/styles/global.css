@@ -65,7 +65,7 @@
 
   html {
     color-scheme: dark;
-    @apply forced-color-adjust-none bg-background text-foreground;
+    @apply bg-background text-foreground forced-color-adjust-none;
 
     ::-webkit-scrollbar-corner {
       @apply bg-transparent;
