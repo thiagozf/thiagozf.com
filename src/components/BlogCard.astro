@@ -2,9 +2,9 @@
 import Avatar from '@/components/Avatar.astro'
 import Badge from '@/components/Badge.astro'
 import Separator from '@/components/Separator.astro'
-import { parseAuthors } from '@/lib/server-utils'
 import { formatDate, readingTime } from '@/lib/utils'
 import type { CollectionEntry } from 'astro:content'
+import { getEntry } from 'astro:content'
 import Link from './Link.astro'
 
 type Props = {
@@ -17,7 +17,7 @@ const { entry } = Astro.props as {
 
 const formattedDate = formatDate(entry.data.date)
 const readTime = readingTime(entry.body!)
-const authors = await parseAuthors(entry.data.authors ?? [])
+const author = await getEntry(entry.data.author)
 ---
 
 <div
@@ -37,25 +37,17 @@ const authors = await parseAuthors(entry.data.authors ?? [])
       <div
         class="mb-2 flex flex-wrap items-center gap-x-2 text-xs text-muted-foreground"
       >
-        {
-          authors.length > 0 && (
-            <>
-              {authors.map((author) => (
-                <div class="flex items-center gap-x-1.5">
-                  <Avatar
-                    height={30}
-                    width={30}
-                    src={author.avatar}
-                    alt={author.name}
-                    class="size-5 rounded-full"
-                  />
-                  <span>{author.name}</span>
-                </div>
-              ))}
-              <Separator orientation="vertical" class="h-4" />
-            </>
-          )
-        }
+        <div class="flex items-center gap-x-1.5">
+          <Avatar
+            height={30}
+            width={30}
+            src={author.data.avatar}
+            alt={author.data.name}
+            class="size-5 rounded-full"
+          />
+          <span>{author.data.name}</span>
+        </div>
+        <Separator orientation="vertical" class="h-4" />
         <span>{formattedDate}</span>
         <Separator orientation="vertical" class="h-4" />
         <span>{readTime}</span>

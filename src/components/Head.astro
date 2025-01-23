@@ -1,8 +1,8 @@
 ---
-import { getEntry } from 'astro:content'
 import '../styles/global.css'
 
 import { site } from '@/site'
+import { Schema } from 'astro-seo-schema'
 import { ClientRouter } from 'astro:transitions'
 
 interface Props {
@@ -11,10 +11,12 @@ interface Props {
   image?: string
 }
 
-const canonicalURL = new URL(Astro.url.pathname, Astro.site)
-const author = await getEntry('authors', 'thiagozf')!
-
-const { title, description, image = '/og/projects/thiagozf.png' } = Astro.props
+const {
+  title,
+  description = site.description,
+  image = new URL(`/og/projects/${site.project}.png`, Astro.site).href,
+} = Astro.props
+const canonicalURL = new URL(Astro.url.pathname, Astro.site).href
 ---
 
 <meta charset="utf-8" />
@@ -28,7 +30,7 @@ const { title, description, image = '/og/projects/thiagozf.png' } = Astro.props
 <title>{title}</title>
 <meta name="title" content={title} />
 <meta name="description" content={description} />
-<meta name="author" content={author.data.name} />
+<meta name="author" content={site.owner} />
 
 <meta name="apple-mobile-web-app-title" content={title} />
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
@@ -42,7 +44,7 @@ const { title, description, image = '/og/projects/thiagozf.png' } = Astro.props
 <meta property="og:url" content={Astro.url} />
 <meta property="og:site_name" content={site.title} />
 <meta property="og:title" content={title} />
-<meta property="og:description" content={description || site.description} />
+<meta property="og:description" content={description} />
 <meta property="og:image" content={new URL(image, Astro.url)} />
 
 <meta property="twitter:card" content="summary_large_image" />
@@ -50,6 +52,27 @@ const { title, description, image = '/og/projects/thiagozf.png' } = Astro.props
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
 <meta property="twitter:image" content={new URL(image, Astro.url)} />
+
+<Schema
+  item={{
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: site.title,
+    description: site.description,
+    url: site.url,
+  }}
+/>
+
+<Schema
+  item={{
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: title,
+    description: description,
+    url: canonicalURL,
+    image,
+  }}
+/>
 
 <ClientRouter />
 

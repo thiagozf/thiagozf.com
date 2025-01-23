@@ -1,4 +1,6 @@
 export type Site = {
+  project: string
+  owner: string
   title: string
   description: string
   email: string
@@ -11,6 +13,8 @@ export type Link = {
 }
 
 export const site: Site = {
+  project: 'thiagozf',
+  owner: 'thiagozf',
   title: 'thiagozf',
   description: 'Friendly tutorials for developers',
   email: 'hi@thiagozf.com',

@@ -11,14 +11,14 @@ type Props = {
   linkDisabled?: boolean
 }
 const { author, linkDisabled = false } = Astro.props
-const { name, avatar, github, twitter, linkedin, website, mail } = author.data
+const { name, avatar, github, twitter, linkedin, website, email } = author.data
 
 const socialLinks: SocialLink[] = [
   website && { href: website, label: 'Website' },
   github && { href: github, label: 'GitHub' },
   twitter && { href: twitter, label: 'Twitter' },
   linkedin && { href: linkedin, label: 'LinkedIn' },
-  mail && { href: mail, label: 'Email' },
+  email && { href: email, label: 'Email' },
 ].filter(Boolean) as SocialLink[]
 
 const { Content } = await render(author)
