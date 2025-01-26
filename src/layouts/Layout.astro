@@ -3,6 +3,7 @@ import Analytics from '@/components/Analytics.astro'
 import Footer from '@/components/Footer.astro'
 import Head from '@/components/Head.astro'
 import Header from '@/components/Header.astro'
+import Katex from '@/components/Katex.astro'
 import { site } from '@/site'
 
 type Props = {
@@ -22,7 +23,6 @@ const { title, description, image } = Astro.props
       description={description || site.description}
       image={image}
     />
-    <Analytics />
     <slot name="head" />
   </head>
   <body>
@@ -35,17 +35,7 @@ const { title, description, image } = Astro.props
       </main>
       <Footer />
     </div>
-
-    <link
-      id="katex-css"
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"
-      media="print"
-    />
+    <Katex />
+    <Analytics />
   </body>
 </html>
-
-<script>
-  const katex = document.getElementById('katex-css')!
-  katex.setAttribute('media', 'all')
-</script>

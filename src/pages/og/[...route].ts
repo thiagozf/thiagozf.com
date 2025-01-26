@@ -14,7 +14,7 @@ export const { getStaticPaths, GET } = OGImageRoute({
     title: page.frontmatter.title || page.frontmatter.name || '',
     description: page.frontmatter.description || '',
     logo: {
-      path: './public/apple-touch-icon.png',
+      path: './public/static/logo.png',
       size: [124, 124],
     },
     font: {

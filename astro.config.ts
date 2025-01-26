@@ -31,7 +31,7 @@ export default defineConfig({
   ],
 
   image: {
-    domains: ['github.com'],
+    domains: ['github.com', 'x.com', 'twitter.com', 'twimg.com'],
     remotePatterns: [{ protocol: 'https' }],
   },
 
@@ -78,4 +78,3 @@ export default defineConfig({
     enabled: false,
   },
 })
-

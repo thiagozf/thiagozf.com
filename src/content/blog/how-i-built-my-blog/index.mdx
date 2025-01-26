@@ -1,193 +1,554 @@
 ---
 title: How I Built My Blog
-description: For quite some time, I’ve wanted a space to share what I learn and connect with others.
+description: Astro, Tailwind and Cloudflare for a free, fast and no bullshit blog
 author: thiagozf
-date: 2024-07-26
+date: 2025-01-26
 tags:
   - webdev
   - opinion
-draft: true
 ---
 
-astro-erudite is written in Astro, a framework optimized for static content such as blogs.
-Aesthetically, it is also designed to be as boring as possible while still maintaining
-maximum functionality, as to allow for the freedom of the developer to make their blog
-uniquely their own. Within the codebase of this template I've included many nuances that,
-in my opinion (and there will be many, many opinions here), make the developer experience
-significantly more pleasant. I've also _excluded_ many features that, frankly, you don't need.
+import Tweet from '@/components/Tweet.astro'
 
-I have a lot of opinions about what makes a great blogging template. As a cumulative result
-of all the slop, bullshit, and outright terrible design decisions I've had to deal with
-working with various templates and frameworks, I bring you [astro-erudite](https://github.com/jktrn/astro-erudite),
-which should hopefully bring a better developer and user experience in terms of ease of
-use, customization, and performance.
+## Introduction
 
-If you’re planning on starting a blog yourself, or are thinking about using some of the
-technologies I’m using, this post will hopefully be helpful!
+In my last post, I shared why [I finally started a blog](/blog/i-finally-started-a-blog)
+as a developer. Over the years, I’ve encountered my fair share of frustrating
+platforms — clunky interfaces, slow load times, and features that seemed
+designed to annoy rather than help. Those experiences shaped what I wanted for
+my own blog, so I set a few key principles to guide this project:
 
-## Welcoming some DX features
+- **Freedom:** I wanted full control over the content, design, and
+  functionality, without being locked into someone else’s platform or rules.
+- **Developer Experience (DX):** Writing and publishing should feel effortless.
+- **Simplicity:** The blog should be clean and easy to navigate, without
+  unnecessary clutter.
+- **Performance:** Fast loading times and smooth interactions are a must.
+- **Privacy-first:** No invasive tracking of personal information — just a
+  straightforward, respectful experience for readers.
 
-This is a non-exhaustive list of features I believe are essential for a frictionless developer experience:
+With these goals in mind, I carefully chose a set of tools and technologies
+to build this blog. Each decision was intentional, aimed at creating something
+that works well and feels good to use. Let’s take a closer look at the tech
+stack and how it all comes together!
 
-- [shadcn/ui](https://ui.shadcn.com) is a pretty controversial component library. I love it. I don't care much for the components themselves as they are literally [Radix](https://www.radix-ui.com/) primitive wrappers&mdash;however, the best part is arguably its take on [theming](https://ui.shadcn.com/docs/theming), which introduces a convention involving CSS colors such as `background` and `foreground` into your Tailwind configuration so that styling is a breeze. These classes also automatically adapt to the user's selected theme, and as such you don't need to worry about adding an equivalent `dark:` style to all of your theming. shadcn/ui turns `"bg-stone-50 text-stone-900 dark:bg-stone-900 dark:text-stone-50"` into `"bg-background text-foreground"`, both more semantic and easier to blanket edit (if you wanted to change all your blues in your site to indigos, you would need to go around every single class and change it rather than editing a single CSS variable). Other utility colors such as `secondary`, `muted`, `accent`, and `destructive` also exist and are very self-explanatory in name (and also have an equivalent `-foreground` class, e.g. `secondary-foreground`, which you can apply to text on top of these colors).
-- [Tailwind Typography](https://github.com/tailwindlabs/tailwindcss-typography) is a plugin that automatically styles any content surrounded by an `<article>{:html}` tag in a way which makes it readable and blog-post-friendly. It does this via a `prose` class which you can wrap anything with to style the interior content. This is especially useful for HTML you don't control, e.g. a post rendered from Markdown. Although your control over the rendering is a bit less fine-grained, you're also already using Tailwind so this right has long been forsaken.
-- [Shiki](https://github.com/shikijs/shiki) is a syntax highlighter for code blocks. Although Astro code blocks utilize Shiki under the hood, I've actually disabled the default code blocks in this template so that they don't collide with my preferred library [rehype-pretty-code](https://rehype-pretty.pages.dev), which is _also_ powered by Shiki but allows for line numbers, line highlighting, inline code syntax highlighting, and a transformers API for advanced customization such as manual `diff` visualization and line blurring. This library does not ship with any CSS, and it's up to you to style the code blocks and code block titles as you see fit. I've provided styles in `src/styles/global.css` within the `@layer components{:css}` directive if you wish to fiddle with them. The following code block is an example of how to style code blocks using rehype-pretty-code, and was generated with the following Markdown code:
+## Inspirations
 
-  ````mdx
-  ```css title="src/styles/global.css" caption="Styling code blocks using rehype-pretty-code (with a caption down here)" showLineNumbers{80} {10-12} /apply/ /components/
+The principles listed above were heavily inspired by projects like [Bear](https://bearblog.dev/),
+a _privacy-first, no-nonsense, super-fast blogging platform_. I seriously
+considered using Bear, but Freedom — having full control over my content and
+design — was non-negotiable for me.
 
-  ```
-  ````
+When it came to the UI, Glance perfectly captured the modern, clean, minimalist
+aesthetic I wanted. I also found inspiration in other platforms and tools that
+share this philosophy, like the [Supreme](https://supreme.com/) website, which
+nails that bold, no-frills design.
 
-  ```css title="src/styles/global.css" caption="Styling code blocks using rehype-pretty-code (with a caption down here)" showLineNumbers{80} {10-12} /apply/ /components/
-  @layer components {
-    article {
-      @apply prose-headings:scroll-mt-20;
+Despite all these great examples, I couldn’t find a platform that ticked all
+the boxes for me. So, I decided to roll up my sleeves and build something tailored
+to my needs.
 
-      .katex-display {
-        @apply overflow-x-auto overflow-y-hidden;
-      }
+## Tech Stack
 
-      /* Removes background from <mark> elements */
-      mark {
-        @apply bg-transparent;
-      }
+To build this blog, I’ve carefully selected a curated set of tools that prioritize
+simplicity, performance, and developer experience:
 
-      /* Blanket syntax highlighting */
-      code[data-theme*=' '] {
-        span { /* [!code ++] */
-          color: var(--shiki-light); /* [!code ++] */
-        } /* [!code ++] */
+- [Astro](https://astro.build/): A static site generator that’s perfect for
+  markdown-focused content. It’s lightweight, fast, and keeps things straightforward.
+- [Tailwind CSS](https://tailwindcss.com/)  A utility-first CSS framework that makes
+  styling ergonomic and efficient, without the overhead of traditional CSS.
+- [Bun](https://bun.sh/) A blazing-fast runtime and package manager that speeds up
+  development and reduces friction in the build process.
+- [Cloudflare Pages](https://pages.cloudflare.com/) A hassle-free hosting solution
+  that’s simple to set up and delivers excellent performance.
 
-        .dark & span { /* [!code --] */
-          color: var(--shiki-dark); /* [!code --] */
-        } /* [!code --] */
-      }
-  ```
+Each tool was chosen with the blog’s ethos in mind: no bloat, no unnecessary
+complexity. Now, let’s dive deeper into each tool and explore why it made the cut,
+how it fits into the overall architecture, and what makes it stand out. We’ll
+start with Astro and work our way through the stack.
 
-  When I added those two diff additions and deletions, I simply added `/* [!code ++] */` and `/* [!code --] */` to the lines I wanted to highlight. Just use the comment syntax of whatever language you're attempting to highlight.
+### Astro: Content-First by Default
 
-- The `cn(){:ts}` function is a utility function which combines [clsx](https://www.npmjs.com/package/clsx) and [tailwind-merge](https://www.npmjs.com/package/tailwind-merge), two packages which allow painless conditional class addition and concatenation:
+Astro stood out as the perfect static site generator for this project. Being
+content focused, it revolves around native Markdown support. Writing posts is
+as simple as creating a Markdown file with some frontmatter for metadata.
+Astro handles the rest, transforming it into a fully optimized and styled
+static page.
 
-  ```tsx title="src/lib/utils.ts" caption="A utility function for class name concatenation" showLineNumbers
+That is another key feature of Astro: delivering content with minimal overhead,
+which is exactly what I wanted.
+
+<Tweet
+  src="https://x.com/thiagozf/status/1881717522350899549"
+  media="https://pbs.twimg.com/media/Gh0z4aAWkAACuYJ?format=jpg&name=small"
+  date="Jan 21, 2025"
+>
+  yay i did it
+</Tweet>
+
+Astro achieves this by shipping **zero JavaScript by default**. Unlike
+traditional frameworks that bundle JavaScript for every page, Astro only
+includes JavaScript when explicitly needed, using a technique called “islands
+architecture.” This means the blog is fast and lightweight, even on slower
+connections.
+
+Finally, Astro comes with built-in optimizations like automatic image
+compression, HTML minification, and lazy loading. These features ensure that
+the blog not only looks good but also **performs exceptionally well**.
+
+### Tailwind CSS: Styling Without the Bloat
+
+Styling a blog can quickly become a headache if you’re not careful. Traditional
+CSS frameworks often come with a lot of bloat, and writing custom CSS can be
+time-consuming. That’s where Tailwind CSS comes in.
+
+Tailwind takes a utility-first approach, meaning you style elements by applying
+small, reusable classes directly in your HTML. This eliminates the need for
+custom CSS files and keeps your styles tightly coupled with your markup.
+
+One of Tailwind’s best features is its purge capability. In production builds,
+Tailwind automatically removes any unused CSS classes, resulting in a tiny
+stylesheet. This is crucial for keeping the blog lightweight and fast.
+
+### Bun: Fast All-in-One JS Toolkit
+
+When it came to managing dependencies and running builds, I wanted something
+fast and modern. Enter Bun, a runtime and toolkit designed to replace Node.js
+and npm.
+
+Bun’s speed is its standout feature. Installing dependencies with Bun is way
+faster than with other package managers, and builds complete in a fraction of
+the time. This is a game-changer for a blog that’s rebuilt and redeployed with
+every update.
+
+But Bun isn’t just fast — it’s also incredibly convenient. It combines the
+functionality of a package manager, bundler, and runtime into a single
+executable. This means no more juggling between npm, Webpack, and Babel. Bun
+handles it all, with built-in TypeScript support and a streamlined developer
+experience.
+
+For a project like this, where simplicity and speed are paramount, Bun was the
+perfect choice.
+
+### Cloudflare Pages: Hosting with Ease
+
+Hosting was another critical decision. I wanted a platform that was fast,
+reliable and secure. Cloudflare Pages checked all the boxes.
+
+Cloudflare Pages offers global CDN hosting, meaning content is served from the
+nearest edge location to the reader. This ensures fast load times no matter
+where your audience is located.
+
+Deploying the blog is also a breeze. Every time I push changes to GitHub,
+Cloudflare Pages automatically rebuilds and deploys the site. It’s a seamless
+process that lets me focus on writing rather than managing infrastructure.
+
+## The Starting Point: astro-erudite
+
+Once I decided the tech stack, the next step was finding a solid reference to
+build upon. While I wanted to create something unique, I also didn’t want to
+start completely from scratch. That’s when I stumbled upon
+[astro-erudite](https://github.com/jktrn/astro-erudite),
+a minimalist Astro blog template that felt like it was made for this project.
+
+astro-erudite is a beautifully crafted template by [enscribe](https://enscribe.dev/)
+([jktrn](https://github.com/jktrn) on GitHub). It checked almost every box I had in mind:
+
+- **Clean and simple design:** The layout is distraction-free, readable, and
+elegant—exactly what I wanted for a content-focused blog.
+- **Tailwind CSS:** The utility-first approach keeps styling minimal and maintainable.
+  It also includes [Tailwind Typography](https://github.com/tailwindlabs/tailwindcss-typography),
+  which ensures content is automatically formatted for readability.
+- **Syntax highlighting:** It uses [Shiki](https://github.com/shikijs/shiki),
+  a lightweight and visually appealing   solution for code snippets — a
+  must-have for any developer blog.
+- **No fluff:** Every feature feels intentional, with no unnecessary bloat or
+  over-engineering.
+
+The template also came with a strong set of built-in features, including:
+
+- A clean, content-first layout.
+- An RSS feed for readers who prefer to follow along that way.
+- SEO optimizations, like Open Graph tags, to make sharing posts seamless.
+- Semantic HTML for better accessibility and structure.
+
+It was the perfect foundation: simple, elegant, and purpose-driven. All it needed
+was a few personal tweaks to make it truly mine.
+
+## The Changes
+
+While astro-erudite was a great starting point, I made some changes to better
+align with my vision.
+
+### Switch to Bun
+
+The template originally used npm as the package manager. I replaced it with Bun
+for faster installs and builds. Bun’s speed and all-in-one toolkit (package
+manager, bundler, and runtime) made the development process smoother and more
+efficient.
+
+That was an easy one: you just need to remove the `package-lock.json` lock file
+and run `bun install{:sh}` to generate a new lock file. For good measure, you can
+also modify the `package.json` and set Bun as the `packageManager`.
+
+```json title="package.json" showLineNumbers
+{
+  "name": "thiagozf",
+  "type": "module",
+  "version": "1.2.4",
+  "private": true,
+  "packageManager": "bun@1.1.20", /* [!code ++] */
+  "engines": { /* [!code ++] */
+    "bun": ">1.1.20" /* [!code ++] */
+  }, /* [!code ++] */
+  "scripts": {}
+}
+```
+
+### Ditch shadcn
+
+The template uses [shadcn](https://github.com/shadcn-ui/ui) UI
+elements, like Avatar and Button. Since these components are very simple,
+I've decided to rewrite them as Astro components, reducing the dependencies
+of the project (_hasta la vista_, React).
+
+For reference, here is the equivalent Avatar component using Astro.
+
+```astro
+---
+import { cn } from '@/lib/utils'
+import { Image } from 'astro:assets'
+import logo from '../../public/static/logo.svg'
+
+type Props = {
+  src?: ImageMetadata
+  width: number
+  height: number
+  alt?: string
+  class?: string
+}
+
+const { src = logo, alt = 'Avatar', class: className, ...props } = Astro.props
+---
+
+<div
+  class={cn(
+    'relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full',
+    className,
+  )}
+>
+  <Image {...props} class="aspect-square h-full w-full" src={src} alt={alt} />
+</div>
+```
+However, I preserved the semantic convention involving CSS colors, such as
+`background` and `foreground` into the Tailwind configuration, since it makes
+styling a breeze. Other utility colors such as `primary`, `secondary`, `muted`,
+`accent`, and `destructive` also exist and are very self-explanatory.
+
+**Example:** shadcn/ui convention turns 
+`"bg-stone-50 text-stone-900 dark:bg-stone-900 dark:text-stone-50"`
+into `"bg-background text-foreground"`, which is both more semantic and easier
+to edit — if I want to change my blog's theme, I don't need to go around
+every component and change its classes, instead I just edit a single CSS
+variable.
+
+I also kept the `cn(){:ts}` utility function, which combines [clsx](https://www.npmjs.com/package/clsx)
+and [tailwind-merge](https://www.npmjs.com/package/tailwind-merge), two packages
+which allow painless conditional class addition and concatenation:
+
+```tsx title="src/lib/utils.ts" showLineNumbers
   import { type ClassValue, clsx } from 'clsx'
   import { twMerge } from 'tailwind-merge'
 
   export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs))
   }
-  ```
+```
 
-  This needs to be in every single template. This is an example of it being used in my `<Link>{:tsx}` component:
+This serves two purposes:
 
-  ```astro showLineNumbers title="src/components/Link.astro" caption="A custom Link component with tailwind-merge and clsx" {16-20}
-  ---
-  import { cn } from '@/lib/utils'
+1. Safely concatenate whatever customizations are passed via the
+   `class` prop to a base components.
+2. Improve the DX, automatically handling class merges and making
+   conditional styles easy to implement.
 
-  const { href, external, class: className, underline, ...rest } = Astro.props
-  ---
+I also customized the Tailwind’s theme to match the clean, minimalist
+aesthetic I was going for. The result is a blog that’s visually simple,
+with plenty of whitespace and no distractions.
 
-  <a
-    href={href}
-    target={external ? '_blank' : '_self'}
-    class={cn(
-      'inline-block transition-colors duration-300 ease-in-out',
-      underline &&
-        'underline decoration-muted-foreground underline-offset-[3px] hover:decoration-foreground',
-      className,
-    )}
-    {...rest}
-  >
-    <slot />
-  </a>
-  ```
+My main inspiration was [Glance](https://github.com/glanceapp/glance),
+a self-hosted dashboard that I use to aggregate feeds. I highly recommend
+you to check it out!
 
-  We were able to, in a single helper function:
+### Add Simple Analytics
 
-  1. Concatenate whatever the user passed via the `class` prop to our base styles
-  2. Conditionally add an underline if the `underline` prop is true
+While I wanted to avoid invasive tracking, I also need some basic insights
+to understand visitor behavior. If my audience enjoys reading about AI,
+for example, I can focus on writing content about it rather than topics
+that are not relevant for them.
 
-  Awesome!
+[Simple Analytics](https://www.simpleanalytics.com/) is a privacy-friendly and
+simple alternative to Google Analytics. It is free, privacy-focused,
+GDPR-compliant, and doesn’t use cookies or trackers.
 
-## Welcoming some UX features
+It was the perfect solution for me. Now I can use a single dashboard to
+instantly see how many visitors are coming to my blog, where they are coming
+from and what they are interested at once they're here.
 
-Within the blog itself (as in the layout, appearance, and navigation) are features that I believe are essential for a great user experience:
+One big plus is that the installation script is very lightweight — less
+than 4kb, compared to **371kb** from `gtag.js` —, so it barely impacts the
+site's performance metrics.
 
-- Images are awesome and, by default, your blog post should have an image associated with it as part of the post's [Open Graph](https://ogp.me/) metadata. Since you can do whatever you want with the image, all of my dummy posts will have a placeholder image placed within their folder in `src/content/blog/`. Whenever you load into a blog post, splat in the middle will be the image associated with that post in its frontmatter.
-- Theme selectors should be self-explanatory. I've added one on the top right of the header, which is also `sticky` and not `absolute` such that it doesn't ignore the document flow (and thus you won't have to add `mt-20` to the top of every single page).
-- The table of contents of a post shouldn't be reduced to a `<details closed>{:html}` at the start of a blog post on desktop. You'd need to go to the top of the page to navigate through items. I've added a sticky `TableOfContents` component which always hangs out around the unused left side margin of a blog post. I also attached a very tiny client-side script using [`IntersectionObserver{:ts}`](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver) to highlight all of the headings you're viewing within the TOC as you scroll through the page&mdash;it also will handle nested headings in that the parent heading of a visible child will still be highlighted even if off-screen (see the dummy [2024 Post](/blog/2024-post) for an example of this). I'll still use a collapsible `<details>{:html}` element for the table of contents on mobile though since obviously a table of contents on the side is unfeasible for small screens.
-- Every page, except the homepage, will have a `<Breadcrumb>{:tsx}` component which shows you your current location in the site hierarchy. I don't see these often in blog templates even though they are so amazing for both discoverability (SEO and crawling) and user experience (the user always knows how "deep" they are in the site).
-- You can specify multiple post authors via frontmatter. If this post author's id is found within the `Authors` collection, then it will render particular info from that author's frontmatter file, `[author-name].md` (e.g. avatar, link to profile). For example, the previous post (2024 Post) has two authors: "enscribe" and "jktrn", where "enscribe" is the only author with a custom avatar since "jktrn" is unregistered.
-  - Each author will have their own page, which lists all of their posts. If you're the only author throughout the entire blog then you can simply disregard all aspects regarding both inserting authors and the `Authors` collection.
-- Each tag will also have their own page, which lists all of the posts under that tag!
-- $\LaTeX$ is fully supported with [KaTeX](https://katex.org/):
+The installation is quite straightforward: I just need to add their script
+to all pages. To do so, create an `Analytics` element and modify
+`src/layouts/Layout.astro` to include it:
 
-  <blockquote>
+```astro title="src/components/Analytics.astro" showLineNumbers
+---
+---
 
-  To solve the cubic equation $t^3 + pt + q = 0$ (where the real numbers
-  $p, q$ satisfy ${4p^3 + 27q^2} > 0$) one can use Cardano's formula:
+<script
+  is:inline
+  async
+  src="https://scripts.simpleanalyticscdn.com/latest.js">
+</script>
 
-  $$
-    \sqrt[{3}]{
-      -\frac{q}{2}
-      +\sqrt{\frac{q^2}{4} + {\frac{p^{3}}{27}}}
-    }+
-    \sqrt[{3}]{
-      -\frac{q}{2}
-      -\sqrt{\frac{q^2}{4} + {\frac{p^{3}}{27}}}
-    }
-  $$
+<noscript>
+  <img
+    src="https://queue.simpleanalyticscdn.com/noscript.gif"
+    alt=""
+    referrerpolicy="no-referrer-when-downgrade"
+  />
+</noscript>
+```
 
-  For any $u_1, \dots, u_n \in \mathbb{C}$ and
-  $v_1, \dots, v_n \in \mathbb{C}$, the Cauchy–Bunyakovsky–Schwarz
-  inequality can be written as follows:
+```astro title="src/layouts/Layout.astro"
+---
+import Analytics from '@/components/Analytics.astro' /* [!code ++] */
+import Footer from '@/components/Footer.astro'
+import Head from '@/components/Head.astro'
+// ...
+---
 
-  $$
-    \left| \sum_{k=1}^n {u_k \bar{v_k}} \right|^2
-    \leq
-    {
-      \left( \sum_{k=1}^n {|u_k|} \right)^2
-      \left( \sum_{k=1}^n {|v_k|} \right)^2
-    }
-  $$
+<!doctype html>
+<html lang="en">
+  <body>
+    <!-- ... -->
+    <Analytics /> /* [!code ++] */
+  </body>
+</html>
+```
 
-  Finally, the determinant of a Vandermonde matrix can be calculated
-  using the following expression:
+### Integrate an OpenGraph Image Generator
 
-  $$
-    \begin{vmatrix}
-    1 & x_1 & x_1^2 & \dots & x_1^{n-1} \\
-    1 & x_2 & x_2^2 & \dots & x_2^{n-1} \\
-    1 & x_3 & x_3^2 & \dots & x_3^{n-1} \\
-    \vdots & \vdots & \vdots & \ddots & \vdots \\
-    1 & x_n & x_n^2 & \dots & x_n^{n-1} \\
-    \end{vmatrix}
-    = {\prod_{1 \leq {i,j} \leq n} {(x_i - x_j)}}
-  $$
+To make shared links more visually appealing, I added an [Open Graph](https://ogp.me/)
+image generator. This dynamically creates social media-friendly images
+for each post, using the post’s title and metadata.
 
-  —<cite>[Three famous mathematical formulas](https://developer.mozilla.org/en-US/docs/Learn/MathML/First_steps/Three_famous_mathematical_formulas) (Mozilla Docs)</cite>
+Since I didn't need anything fancy for now, I've used the [`astro-og-canvas`](https://www.npmjs.com/package/astro-og-canvas/v/0.3.0)
+package. It generates OG images with a pre-defined layout, but provides
+some level of customization. It is also very straightforward to use:
 
-  </blockquote>
+1. **Create a new `src/pages` file:** this will be the route that generates
+   the Open Graph images.
+2. **Customize the images**: Use the `OGImageRoute{:ts}` helper to create
+   the `getStaticPaths{:ts}` and `GET{:ts}` functions for you.
+   You can read more about the available options in the
+   [astro-og-canvas documentation](https://github.com/delucis/astro-og-canvas/tree/latest/packages/astro-og-canvas#image-options).
 
-## Foregoing some slop
+Here is the final code. I'm using the frontmatter metadata to build the
+image. I've also added the same font and colors used by the web pages
+to keep visual consistency.
 
-- Goodbye, [ESLint](https://eslint.org/)! There have been so many occasions where I've had to deal with blogging templates with in-built pre-commit hooks which enforce contrived and arbitrary linting rules that, frankly, I couldn't be bothered with. Obviously, linting is awesome for ensuring consistency and best practice, but that's with shared and large codebases. You're dealing with, at most, your mediocre MDX blog posts and some interior fetching. It's just not worth the hypertension.
+```ts title="src/pages/og/[...route].ts" showLineNumbers
+import { OGImageRoute } from 'astro-og-canvas'
 
-- You really don't need analytics via [Umami](https://umami.is) or [Plausible](https://plausible.io). Let's be realistic: for many personal blogs, unless you're an anime profile picture Twitter microcelebrity and/or the daughter of Taylor Swift you don't need to know how many of your avid fans click Big Button A versus how many click Big Button B.
-- You really don't need a comments section via [Giscus](https://giscus.app). This opens up a can of worms involving the ability to spam comments and the necessity to moderate them. If you want organic discussion about your blog posts to happen, then share on social media and let people discuss there.
-  - Speaking of sharing on social media, let's get rid of the share buttons. Please inform me of a single time you have used a share button on a blog post.
-- You really don't need a <abbr title="Content Management System">CMS</abbr> unless you have thousands of posts and/or are willing to navigate through a clunky management interface. Markdown and folders is really all you need, which you can organize to your preference via folder or file naming conventions.
-- If you have literally anything involving an `.env` file in a blogging site, please think about what you are doing very carefully.
-- Please do not override the browser's <kbd>Ctrl</kbd> + <kbd>K</kbd> functionality to open up a command palette. There should not be a single reason why a user would use a small context menu to browse your blog over the `/blog` route. Most of the time, command palettes on sites do nothing more than regurgitate shortcuts that are already on the same page you're hiding with the palette's modal.
+const pages = import.meta.glob('/src/content/**/*.{md,mdx}', { eager: true })
 
-## Something important
+const newPages = Object.entries(pages).reduce((acc, [path, page]) => {
+  const newPath = path.replace('/src/content', '')
+  return { ...acc, [newPath]: page }
+}, {})
 
-Before we wrap up, I want to emphasize that everything that I've shared here is based on my own personal opinions and experiences. While I believe these practices and choices lead to a better blogging experience, you're absolutely free to disagree.
+export const { getStaticPaths, GET } = OGImageRoute({
+  param: 'route',
+  pages: newPages,
+  getImageOptions: (_path, page) => ({
+    title: page.frontmatter.title || page.frontmatter.name || '',
+    description: page.frontmatter.description || '',
+    logo: {
+      path: './public/static/logo.png',
+      size: [124, 124],
+    },
+    font: {
+      title: {
+        families: ['JetBrains Mono', 'monospaced'],
+        weight: 'Bold',
+        color: [250, 250, 250],
+      },
+      description: {
+        families: ['JetBrains Mono', 'monospaced'],
+        color: [211, 198, 170],
+      },
+    },
+    fonts: ['./public/fonts/JetBrainsMono[wght].woff2'],
+    bgGradient: [[10, 10, 10]],
+  }),
+})
+```
 
-The web development community, especially in spaces like Twitter and various online forums, is constantly engaged in heated debates about what constitutes "best practices." You'll find a wide spectrum of viewpoints:
+Every post now has an associated image with it at
+`/og/blog/${post.id}.png{:bash}`. The image for this blog post,
+for example, is [`/og/blog/how-i-built-my-blog.png`](/og/blog/how-i-built-my-blog.png):
 
-1. Fundamentalists who adhere strictly to established patterns and completely disregard change,
-2. Accelerationists who gobble up whatever Vercel cooks as if it's the second coming of Christ,
-3. and everyone in between this spectrum who just wants to ship.
+<img src="/og/blog/how-i-built-my-blog.png" />
 
-I'm just another guy who loves to blog, and I wanted to share what particular technology stack worked the best for me in this particular use case. A stack for one project can be completely unusable for another. If you vehemently hate any of the design choices I've made then simply get rid of them. MIT license! Happy blogging.
+The cool thing is that it also works for other content collections
+of the Astro website, like **projects** and **authors**. Here is an
+example for the `thiagozf`'s author profile ([`/og/authors/thiagozf.png`](/og/authors/thiagozf.png)):
+
+<img src="/og/authors/thiagozf.png" />
+
+Pretty cool, right?
+
+### Add Structured Data for SEO (JSON-LD)
+
+To improve search engine visibility, I've added [Schema.org](https://schema.org)
+[JSON-LD](https://json-ld.org/) structured data to each post. This
+helps search engines better understand the content and display rich
+snippets in search results.
+
+It is fairly simple to declare schemas in Astro using the
+[`astro-seo-schema`](https://www.npmjs.com/package/astro-seo-schema)
+package: you just need to import the `<Schema>{:tsx}` component,
+that is fully type-safe (it uses TypeScript definitions from
+[`schema-dts`](https://www.npmjs.com/package/schema-dts).
+
+This `<Schema>{:tsx}` component:
+
+- Adds type checking to validate user-provided schema JSON
+- Escapes the JSON data.
+- Outputs a `<script type="type="application/ld+json">{:html}` with the escaped schema.
+
+Here are the relevant parts of the blog post page (`/src/pages/blog/[...id].astro`):
+
+```astro title="src/pages/blog/[...id].astro"
+---
+import { Schema } from 'astro-seo-schema'  /* [!code ++] */
+import { buildPostSchema } from '@/lib/schemas'  /* [!code ++] */
+
+// ...
+
+const schema = buildPostSchema(post, author) /* [!code ++] */
+---
+
+<Layout>
+  <Schema slot="head" item={schema} />  /* [!code ++] */
+  <!-- blog post content -->
+</Layout>
+```
+
+A utility function `buildPostSchema{:ts}` is used to build the schema.
+
+```ts title="src/lib/schemas.ts"
+import { site } from '@/site'
+import { type CollectionEntry } from 'astro:content'
+import type { BlogPosting, Person, WithContext } from 'schema-dts'
+import { getPostImage, getPostURL } from './posts'
+
+const buildAuthorSchema = (author: CollectionEntry<'authors'>): Person => {
+  const { id, data } = author
+  const { name, email } = data
+  const url = new URL(`/authors/${id}`, site.url).href
+  const image = new URL(`/og/authors/${id}`, site.url).href
+  return {
+    '@type': 'Person',
+    name,
+    url,
+    email,
+    image,
+  }
+}
+
+export const buildPostSchema = (
+  post: CollectionEntry<'blog'>,
+  author: CollectionEntry<'authors'>,
+): WithContext<BlogPosting> => {
+  const image = getPostImage(post)
+  const url = getPostURL(post)
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    author: buildAuthorSchema(author),
+    headline: post.data.title,
+    datePublished: post.data.date.toISOString(),
+    dateCreated: post.data.date.toISOString(),
+    description: post.data.description,
+    keywords: post.data.tags,
+    image,
+    url,
+  }
+}
+```
+
+Finally, base schemas describing the website and the page were added
+on every page (`/src/components/Head.astro`).
+
+```astro title="src/components/Head.astro"
+---
+import { site } from '@/site'
+import { Schema } from 'astro-seo-schema'
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site).href
+const {
+  title,
+  description = site.description,
+  image = new URL(`/og/projects/${site.project}.png`, Astro.site).href,
+} = Astro.props
+---
+
+<Schema
+  item={{
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: site.title,
+    description: site.description,
+    url: site.url,
+  }}
+/>
+
+<Schema
+  item={{
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: title,
+    description: description,
+    url: canonicalURL,
+    image,
+  }}
+/>
+```
+
+## How It All Fits Together
+
+The DX to add a new post is straightforward:
+
+1. Create a Markdown file in the `/src/pages/blog` directory.
+2. Write the post using markdown and add frontmatter metadata.
+3. Run `bun run dev` to preview the post.
+4. Push the changes to GitHub, and Cloudflare Pages handles the rest.
+
+The result is a blog that is blazingly fast, respects reader privacy,
+and lets the content shine.
+
+<img src="https://media1.tenor.com/m/Hw0aKasI6B4AAAAd/fast-blazing-fast.gif" />
+
+## Final Thoughts
+
+Building a blog in 2025 doesn’t have to be complicated. By choosing tools that
+prioritize simplicity, performance, and privacy, I’ve created a platform that’s fast,
+lightweight, and easy to maintain.
+
+If you’re inspired to start your own blog, I encourage you to explore the tools I’ve
+used. You don’t need a complex setup to create something meaningful. Sometimes, less
+really is more!

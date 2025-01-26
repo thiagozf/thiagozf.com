@@ -1,0 +1,80 @@
+---
+import { Icon } from 'astro-icon/components'
+import { Image } from 'astro:assets'
+import Avatar from './Avatar.astro'
+import Button from './Button.astro'
+
+interface Props {
+  avatar?: ImageMetadata
+  username?: string
+  handle?: string
+  date: string
+  src: string
+  media?: ImageMetadata
+  video?: ImageMetadata
+}
+
+const {
+  avatar = {
+    format: 'jpg',
+    height: 48,
+    width: 48,
+    src: 'https://pbs.twimg.com/profile_images/1881713315077898240/k1hqUNLw_normal.jpg',
+  },
+  username = 'thiagozf',
+  handle = 'thiagozf',
+  date,
+  src,
+  media,
+  video,
+} = Astro.props
+---
+
+<div class="mx-auto my-6 flex flex-col gap-y-4 rounded-xl border p-4">
+  <div class="not-prose flex flex-wrap justify-between gap-4">
+    <span class="flex flex-wrap items-center gap-3">
+      <Avatar
+        src={avatar}
+        alt={`${username}'s avatar`}
+        class="size-12 rounded-full"
+        width={48}
+        height={48}
+      />
+      <div class="flex flex-col leading-snug">
+        <span class="flex gap-2 font-bold">
+          {username}
+          <span class="font-normal opacity-70">@{handle}</span>
+        </span>
+        <span class="opacity-80">{date}</span>
+      </div>
+    </span>
+    <Button href={src} variant="ghost" size="icon" class="text-primary">
+      <Icon name="lucide:twitter" />
+    </Button>
+  </div>
+  <div class="prose-p:m-0">
+    <slot />
+  </div>
+  {
+    media && (
+      <div class="not-prose flex items-center justify-center">
+        <Image
+          src={media}
+          alt="Tweet Media"
+          width={500}
+          height={400}
+          class="not-prose rounded-md"
+        />
+      </div>
+    )
+  }
+  {
+    video && (
+      <video controls width="100%" class="not-prose rounded-md">
+        <source src={video.toString()} type="video/mp4" />
+        <track kind="captions" />
+        Sorry, your browser doesn't support embedded videos.
+      </video>
+    )
+  }
+</div>

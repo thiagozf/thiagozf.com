@@ -29,6 +29,7 @@ const authorPosts = (await getCollection('blog'))
 <Layout
   title={`${author.data.name} (Author)`}
   description={author.data.bio || `Profile of ${author.data.name}.`}
+  image={`/og/authors/${author.id}.png`}
 >
   <Container class="flex flex-col gap-y-6">
     <Breadcrumbs
