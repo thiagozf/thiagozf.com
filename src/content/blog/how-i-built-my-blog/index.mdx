@@ -13,10 +13,10 @@ import Tweet from '@/components/Tweet.astro'
 ## Introduction
 
 In my last post, I shared why [I finally started a blog](/blog/i-finally-started-a-blog)
-as a developer. Over the years, I’ve encountered my fair share of frustrating
-platforms — clunky interfaces, slow load times, and features that seemed
-designed to annoy rather than help. Those experiences shaped what I wanted for
-my own blog, so I set a few key principles to guide this project:
+as a developer. Over the years, I’ve dealt with my fair share of frustrating
+platforms — clunky interfaces, slow load times, and "features"" that seemed
+designed to annoy. Those experiences shaped what I wanted for
+my own blog, so I've set a few key principles to guide this project:
 
 - **Freedom:** I wanted full control over the content, design, and
   functionality, without being locked into someone else’s platform or rules.
@@ -27,45 +27,44 @@ my own blog, so I set a few key principles to guide this project:
 - **Privacy-first:** No invasive tracking of personal information — just a
   straightforward, respectful experience for readers.
 
-With these goals in mind, I carefully chose a set of tools and technologies
-to build this blog. Each decision was intentional, aimed at creating something
-that works well and feels good to use. Let’s take a closer look at the tech
-stack and how it all comes together!
+Ultimately, I chose to build the site myself instead of relying on a platform.
+Each decision about the tech stack was intentional, focused on creating
+something that works well and feels good to use. Let’s dive into how it all
+came together!
+
+By the way, if you’d like to explore the source code, it’s available on GitHub:
+[thiagozf.com](https://github.com/thiagozf/thiagozf.com).
 
 ## Inspirations
 
-The principles listed above were heavily inspired by projects like [Bear](https://bearblog.dev/),
+When it comes to philosophy, I drew a lot of inspiration from [Bear](https://bearblog.dev/) —
 a _privacy-first, no-nonsense, super-fast blogging platform_. I seriously
-considered using Bear, but Freedom — having full control over my content and
-design — was non-negotiable for me.
+considered using it, but having **full** control over my content and
+design was dealbreaker.
 
-When it came to the UI, Glance perfectly captured the modern, clean, minimalist
-aesthetic I wanted. I also found inspiration in other platforms and tools that
-share this philosophy, like the [Supreme](https://supreme.com/) website, which
-nails that bold, no-frills design.
-
-Despite all these great examples, I couldn’t find a platform that ticked all
-the boxes for me. So, I decided to roll up my sleeves and build something tailored
-to my needs.
+For UI, [Glance](https://github.com/glanceapp/glance) perfectly captured the
+exact aesthetic I had in mind. I also took inspiration from other sites
+like [Supreme](https://supreme.com/) website, which nails a bold, minimalist
+design without unnecessary frills
 
 ## Tech Stack
 
-To build this blog, I’ve carefully selected a curated set of tools that prioritize
-simplicity, performance, and developer experience:
+To build this blog, I handpicked tools that align with my focus on simplicity,
+performance, and developer experience:
 
-- [Astro](https://astro.build/): A static site generator that’s perfect for
-  markdown-focused content. It’s lightweight, fast, and keeps things straightforward.
-- [Tailwind CSS](https://tailwindcss.com/)  A utility-first CSS framework that makes
+- [Astro](https://astro.build/): A static site generator perfect for markdown-based
+  content. It’s lightweight, fast, and keeps things straightforward.
+- [Tailwind CSS](https://tailwindcss.com/) A utility-first CSS framework that makes
   styling ergonomic and efficient, without the overhead of traditional CSS.
-- [Bun](https://bun.sh/) A blazing-fast runtime and package manager that speeds up
-  development and reduces friction in the build process.
+- [Bun](https://bun.sh/) A blazing-fast runtime and package manager that
+  streamlines development and speeds up the build process.
 - [Cloudflare Pages](https://pages.cloudflare.com/) A hassle-free hosting solution
-  that’s simple to set up and delivers excellent performance.
+  that’s easy to set up and delivers excellent performance.
 
-Each tool was chosen with the blog’s ethos in mind: no bloat, no unnecessary
-complexity. Now, let’s dive deeper into each tool and explore why it made the cut,
-how it fits into the overall architecture, and what makes it stand out. We’ll
-start with Astro and work our way through the stack.
+Each tool was chosen to reflect the blog’s principles: no bloat, no unnecessary
+complexity. Next, we’ll take a closer look at each tool and explore why it made
+the cut, how it fits into the overall architecture, and what made it stand out.
+Let’s start with Astro!
 
 ### Astro: Content-First by Default
 
@@ -112,23 +111,18 @@ stylesheet. This is crucial for keeping the blog lightweight and fast.
 
 ### Bun: Fast All-in-One JS Toolkit
 
-When it came to managing dependencies and running builds, I wanted something
-fast and modern. Enter Bun, a runtime and toolkit designed to replace Node.js
-and npm.
+I wanted to iterate on my blog fast. That’s where Bun came in, a runtime and
+toolkit designed to replace Node.js and npm.
 
-Bun’s speed is its standout feature. Installing dependencies with Bun is way
-faster than with other package managers, and builds complete in a fraction of
-the time. This is a game-changer for a blog that’s rebuilt and redeployed with
-every update.
+Bun’s standout feature is its speed. Dependency installation is significantly
+faster compared to other package managers, and builds complete in a fraction of
+the time. This is a game-changer for a blog that’s frequently updated, rebuilt,
+and redeployed.
 
-But Bun isn’t just fast — it’s also incredibly convenient. It combines the
-functionality of a package manager, bundler, and runtime into a single
-executable. This means no more juggling between npm, Webpack, and Babel. Bun
-handles it all, with built-in TypeScript support and a streamlined developer
-experience.
+But Bun isn’t just about speed — it’s also about convenience. It combines a
+package manager, bundler, and runtime. It also has built-in TypeScript support.
 
-For a project like this, where simplicity and speed are paramount, Bun was the
-perfect choice.
+tl;dr: Bun simplifies the entire workflow and offers a seamless developer experience.
 
 ### Cloudflare Pages: Hosting with Ease
 
@@ -145,22 +139,22 @@ process that lets me focus on writing rather than managing infrastructure.
 
 ## The Starting Point: astro-erudite
 
-Once I decided the tech stack, the next step was finding a solid reference to
-build upon. While I wanted to create something unique, I also didn’t want to
-start completely from scratch. That’s when I stumbled upon
+Once the tech stack was set on stone, the next step was finding a solid
+reference to build upon. While I wanted to create something unique, I also
+didn’t want to start completely from scratch. That’s when I found
 [astro-erudite](https://github.com/jktrn/astro-erudite),
-a minimalist Astro blog template that felt like it was made for this project.
+a minimalist Astro blog template. Spoiler: it was a godsend!
 
 astro-erudite is a beautifully crafted template by [enscribe](https://enscribe.dev/)
-([jktrn](https://github.com/jktrn) on GitHub). It checked almost every box I had in mind:
+([jktrn](https://github.com/jktrn) on GitHub). Here are some of its features:
 
 - **Clean and simple design:** The layout is distraction-free, readable, and
-elegant—exactly what I wanted for a content-focused blog.
+  elegant—exactly what I wanted for a content-focused blog.
 - **Tailwind CSS:** The utility-first approach keeps styling minimal and maintainable.
   It also includes [Tailwind Typography](https://github.com/tailwindlabs/tailwindcss-typography),
   which ensures content is automatically formatted for readability.
 - **Syntax highlighting:** It uses [Shiki](https://github.com/shikijs/shiki),
-  a lightweight and visually appealing   solution for code snippets — a
+  a lightweight and visually appealing solution for code snippets — a
   must-have for any developer blog.
 - **No fluff:** Every feature feels intentional, with no unnecessary bloat or
   over-engineering.
@@ -177,19 +171,17 @@ was a few personal tweaks to make it truly mine.
 
 ## The Changes
 
-While astro-erudite was a great starting point, I made some changes to better
-align with my vision.
+While astro-erudite was a great starting point, but I made a few changes.
 
 ### Switch to Bun
 
 The template originally used npm as the package manager. I replaced it with Bun
-for faster installs and builds. Bun’s speed and all-in-one toolkit (package
-manager, bundler, and runtime) made the development process smoother and more
+for faster installs and builds. It made the development process smoother and more
 efficient.
 
-That was an easy one: you just need to remove the `package-lock.json` lock file
-and run `bun install{:sh}` to generate a new lock file. For good measure, you can
-also modify the `package.json` and set Bun as the `packageManager`.
+That was an easy one: I just needed to remove the `package-lock.json` file
+and run `bun install{:sh}` to generate a new lock file. For good measure,
+I've also set Bun as the package manager:
 
 ```json title="package.json" showLineNumbers
 {
@@ -197,17 +189,17 @@ also modify the `package.json` and set Bun as the `packageManager`.
   "type": "module",
   "version": "1.2.4",
   "private": true,
-  "packageManager": "bun@1.1.20", /* [!code ++] */
-  "engines": { /* [!code ++] */
-    "bun": ">1.1.20" /* [!code ++] */
-  }, /* [!code ++] */
+  "packageManager": "bun@1.1.20" /* [!code ++] */,
+  "engines": {
+    /* [!code ++] */ "bun": ">1.1.20" /* [!code ++] */
+  } /* [!code ++] */,
   "scripts": {}
 }
 ```
 
-### Ditch shadcn
+### Remove shadcn
 
-The template uses [shadcn](https://github.com/shadcn-ui/ui) UI
+The original template uses some [shadcn](https://github.com/shadcn-ui/ui) UI
 elements, like Avatar and Button. Since these components are very simple,
 I've decided to rewrite them as Astro components, reducing the dependencies
 of the project (_hasta la vista_, React).
@@ -240,45 +232,44 @@ const { src = logo, alt = 'Avatar', class: className, ...props } = Astro.props
   <Image {...props} class="aspect-square h-full w-full" src={src} alt={alt} />
 </div>
 ```
+
 However, I preserved the semantic convention involving CSS colors, such as
 `background` and `foreground` into the Tailwind configuration, since it makes
-styling a breeze. Other utility colors such as `primary`, `secondary`, `muted`,
-`accent`, and `destructive` also exist and are very self-explanatory.
+styling a breeze.
 
-**Example:** shadcn/ui convention turns 
-`"bg-stone-50 text-stone-900 dark:bg-stone-900 dark:text-stone-50"`
+If you didn't know yet, shadcn/ui convention helps you to transform styles
+like `"bg-stone-50 text-stone-900 dark:bg-stone-900 dark:text-stone-50"`
 into `"bg-background text-foreground"`, which is both more semantic and easier
-to edit — if I want to change my blog's theme, I don't need to go around
-every component and change its classes, instead I just edit a single CSS
-variable.
+to modify. If I want to change my blog's theme, I don't need to change
+every component — instead, I just edit a single CSS variable.
+
+Other utility colors such as `primary`, `secondary`, `muted`,
+`accent`, and `destructive` also exist and are very self-explanatory.
 
 I also kept the `cn(){:ts}` utility function, which combines [clsx](https://www.npmjs.com/package/clsx)
 and [tailwind-merge](https://www.npmjs.com/package/tailwind-merge), two packages
-which allow painless conditional class addition and concatenation:
+which allow painless conditional class overrides, addition and
+concatenation:
 
 ```tsx title="src/lib/utils.ts" showLineNumbers
-  import { type ClassValue, clsx } from 'clsx'
-  import { twMerge } from 'tailwind-merge'
+import { type ClassValue, clsx } from 'clsx'
+import { twMerge } from 'tailwind-merge'
 
-  export function cn(...inputs: ClassValue[]) {
-    return twMerge(clsx(inputs))
-  }
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
+}
 ```
 
 This serves two purposes:
 
-1. Safely concatenate whatever customizations are passed via the
+1. Safely concatenate whatever custom style classes are passed via the
    `class` prop to a base components.
 2. Improve the DX, automatically handling class merges and making
-   conditional styles easy to implement.
+   conditional styles easier to implement.
 
 I also customized the Tailwind’s theme to match the clean, minimalist
 aesthetic I was going for. The result is a blog that’s visually simple,
-with plenty of whitespace and no distractions.
-
-My main inspiration was [Glance](https://github.com/glanceapp/glance),
-a self-hosted dashboard that I use to aggregate feeds. I highly recommend
-you to check it out!
+with no distractions.
 
 ### Add Simple Analytics
 
@@ -289,29 +280,25 @@ that are not relevant for them.
 
 [Simple Analytics](https://www.simpleanalytics.com/) is a privacy-friendly and
 simple alternative to Google Analytics. It is free, privacy-focused,
-GDPR-compliant, and doesn’t use cookies or trackers.
+GDPR-compliant, and doesn’t use cookies or trackers. It was the perfect fit.
 
-It was the perfect solution for me. Now I can use a single dashboard to
-instantly see how many visitors are coming to my blog, where they are coming
-from and what they are interested at once they're here.
+The dashboard shows how many visitors are coming to my blog, where they are
+coming from and what they are interested at once they're here.
 
 One big plus is that the installation script is very lightweight — less
-than 4kb, compared to **371kb** from `gtag.js` —, so it barely impacts the
-site's performance metrics.
+than 4kb, compared to **371kb** from `gtag.js` —, so it doesn't hurt
+the performance.
 
-The installation is quite straightforward: I just need to add their script
-to all pages. To do so, create an `Analytics` element and modify
-`src/layouts/Layout.astro` to include it:
+Setup was straightforward: I just needed to add their script
+to all pages.
 
 ```astro title="src/components/Analytics.astro" showLineNumbers
 ---
+// A component with Simple Analytics script
 ---
 
-<script
-  is:inline
-  async
-  src="https://scripts.simpleanalyticscdn.com/latest.js">
-</script>
+<script is:inline async src="https://scripts.simpleanalyticscdn.com/latest.js"
+></script>
 
 <noscript>
   <img
@@ -325,15 +312,13 @@ to all pages. To do so, create an `Analytics` element and modify
 ```astro title="src/layouts/Layout.astro"
 ---
 import Analytics from '@/components/Analytics.astro' /* [!code ++] */
-import Footer from '@/components/Footer.astro'
-import Head from '@/components/Head.astro'
 // ...
 ---
 
 <!doctype html>
 <html lang="en">
   <body>
-    <!-- ... -->
+    <!-- Append it to the end of body, so it is the last thing loaded -->
     <Analytics /> /* [!code ++] */
   </body>
 </html>
@@ -342,18 +327,18 @@ import Head from '@/components/Head.astro'
 ### Integrate an OpenGraph Image Generator
 
 To make shared links more visually appealing, I added an [Open Graph](https://ogp.me/)
-image generator. This dynamically creates social media-friendly images
-for each post, using the post’s title and metadata.
+image generator. This allows me to statically generate social media-friendly
+images for each post, using its metadata.
 
-Since I didn't need anything fancy for now, I've used the [`astro-og-canvas`](https://www.npmjs.com/package/astro-og-canvas/v/0.3.0)
-package. It generates OG images with a pre-defined layout, but provides
-some level of customization. It is also very straightforward to use:
+Since I don't need anything fancy for now, [`astro-og-canvas`](https://www.npmjs.com/package/astro-og-canvas/v/0.3.0)
+was good enough for the job. It generates OG images with a pre-defined layout,
+but provides some level of customization. It was also very straightforward to
+setup. I just needed to:
 
-1. **Create a new `src/pages` file:** this will be the route that generates
-   the Open Graph images.
-2. **Customize the images**: Use the `OGImageRoute{:ts}` helper to create
-   the `getStaticPaths{:ts}` and `GET{:ts}` functions for you.
-   You can read more about the available options in the
+1. **Create a new `src/pages` file:** the route that generates Open Graph images.
+2. **Customize the output**: use the `OGImageRoute{:ts}` helper to customize
+   the generated images and export the `getStaticPaths{:ts}` and `GET{:ts}`
+   functions for. You can read more about the available options in the
    [astro-og-canvas documentation](https://github.com/delucis/astro-og-canvas/tree/latest/packages/astro-og-canvas#image-options).
 
 Here is the final code. I'm using the frontmatter metadata to build the
@@ -422,7 +407,7 @@ It is fairly simple to declare schemas in Astro using the
 [`astro-seo-schema`](https://www.npmjs.com/package/astro-seo-schema)
 package: you just need to import the `<Schema>{:tsx}` component,
 that is fully type-safe (it uses TypeScript definitions from
-[`schema-dts`](https://www.npmjs.com/package/schema-dts).
+[`schema-dts`](https://www.npmjs.com/package/schema-dts)).
 
 This `<Schema>{:tsx}` component:
 
@@ -434,8 +419,8 @@ Here are the relevant parts of the blog post page (`/src/pages/blog/[...id].astr
 
 ```astro title="src/pages/blog/[...id].astro"
 ---
-import { Schema } from 'astro-seo-schema'  /* [!code ++] */
-import { buildPostSchema } from '@/lib/schemas'  /* [!code ++] */
+import { buildPostSchema } from '@/lib/schemas' /* [!code ++] */
+import { Schema } from 'astro-seo-schema' /* [!code ++] */
 
 // ...
 
@@ -443,7 +428,7 @@ const schema = buildPostSchema(post, author) /* [!code ++] */
 ---
 
 <Layout>
-  <Schema slot="head" item={schema} />  /* [!code ++] */
+  <Schema slot="head" item={schema} /> /* [!code ++] */
   <!-- blog post content -->
 </Layout>
 ```
