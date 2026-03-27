@@ -23,7 +23,6 @@ export const site: Site = {
 
 export const nav: Link[] = [
   { href: '/blog/', label: 'Blog' },
-  { href: '/newsletter/', label: 'Newsletter' },
 ]
 
 export const social: Link[] = [
